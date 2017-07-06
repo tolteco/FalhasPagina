@@ -1,4 +1,4 @@
-# FalhasPagina
+# Falhas de Pagina
 ## 2º. Trabalho de Sistemas Operacionais.
 ### Objetivo
 Determinar o número de falhas de páginas de diferentes algoritmos de substituição
@@ -24,3 +24,16 @@ O usuário poderá informar o número de frames, e como resultado o simulador de
 ### Algoritmos de falhas de páginas a serem simulados:
 - Ótimo
 - LRU pilha
+
+## Desenvolvimento
+### Chamada
+```
+[programa] [opção] arquivo [frames]
+frames  : Quantidade de frames (necessario opção /f)
+programa: 
+        Windows: Otimo.exe | LRUPilha.exe
+        Linux:   ./Otimo.x | ./LRUPilha.x
+opção   :
+        FALTA ESCREVER
+        /f : Considera o número de frames fornecido
+```
