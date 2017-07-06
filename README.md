@@ -23,4 +23,4 @@ O usuário poderá informar o número de frames, e como resultado o simulador de
 **no mínimo** o número de falhas de páginas e também o tempo de simulação.
 ### Algoritmos de falhas de páginas a serem simulados:
 - Ótimo
-- 5 B (LRU pilha)
+- LRU pilha
