@@ -29,11 +29,12 @@ O usuário poderá informar o número de frames, e como resultado o simulador de
 ### Chamada
 ```
 [programa] [opção] arquivo [frames]
-frames  : Quantidade de frames (necessario opção /f)
-programa: 
+frames  : Quantidade de frames
+programa:
         Windows: Otimo.exe | LRUPilha.exe
         Linux:   ./Otimo.x | ./LRUPilha.x
 opção   :
         FALTA ESCREVER
-        /f : Considera o número de frames fornecido
+        /f : Entrada normal com o numero de frames
+        /i : Imprime o estado dos frames a cada iteração
 ```
