@@ -34,7 +34,28 @@ programa:
         Windows: Otimo.exe | LRUPilha.exe
         Linux:   ./Otimo.x | ./LRUPilha.x
 opção   :
-        FALTA ESCREVER
         /f : Entrada normal com o numero de frames
-        /i : Imprime o estado dos frames a cada iteração
+        /i : Imprime o estado dos frames a cada iteração (Não imprime tempo nem falhas de página)
 ```
+### LRUPilha
+Estrutura da pilha:
+```
+typedef struct nodo{
+    int info; //Pagina
+    struct nodo* ant;
+    struct nodo* prox;
+}NODO;
+typedef NODO* LISTAD;
+
+//Variaveis globais lista
+NODO* lista; //comeco da lista (posicao da pilha a serem inseridos novos nos)
+NODO* listaF; //fim da lista (posicao de onde saem os nos para falhas de pagina)
+```
+Método `acesso_a_pagina(int [pagina a ser acessada])` deve ser usado para iteragir com a pilha. Próprio método insere elementos, remove e produz falhas de página.
+
+### Otimo
+> Vazio por enquanto
+
+### Ambos
+- Método `ledados()` lê arquivo passado por parâmetro - máximo de 11.000.000 (onze milhões) de entradas.
+- Método `hexaint()` Traduz string lida (hexadecimal) para valor decimal, retorna numero da página a ser acessada.
