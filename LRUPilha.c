@@ -9,6 +9,7 @@
 
 //Declaracao de variaveis globais
 FILE *IN;
+int COUNTFALHA = 0;
 int FRAMES = 6; //Quantidade total de frames
 int PAGINA = 5; //A definir valor fixo - Quantidade de hexadecimais usados para enderecamento de paginas
 int DESLOCAMENTO = 3;//A definir - Quantidade de hexadecimais usados para deslocamento
@@ -146,13 +147,16 @@ void acesso_a_pagina(int V){ //Acessa a pagina (mexe na pilha) V
 		if (OCUPADOS == FRAMES){ //Todos os frames estiverem ocupados
 			lista_remove();
 			lista_insere(V);
+			COUNTFALHA++;
 		} else { //Tem espaco
 			lista_insere(V);
+			COUNTFALHA++;
 		}
 	} else { //Pagina na lista
 		lista_empurra(p);
 	}
 }
+
 ////////////////////////////////////////////FIM DECLARACAO LISTA
 ////////////////////////////////////////////LEITURA E TRATAMENTO DE LEITURA
 //Variaveis globais este setor
@@ -223,14 +227,17 @@ void ledados(){
 	while (!feof(IN)){
 		fscanf (IN, "%s\n", &U);
 		i = hexaint();
-    REQ[j] = i;
-    j++;
+        REQ[j] = i;
+        j++;
 	}
+	REQ[j] = -1;
 }
 
 ////////////////////////////////////////////FIM LEITURA
 
 int main(int argc, char *argv[]){
+    double segundos;
+    int i = 0, controle = 0;
 	lista_cria();
 
 	if (argc < 4){
@@ -252,14 +259,29 @@ int main(int argc, char *argv[]){
 	ledados();
 
   if (strcmp(argv[1], "-f") == 0 || strcmp(argv[1], "/f") == 0 || strcmp(argv[1], "-F") == 0 || strcmp(argv[1], "/F") == 0){ //Opcao convencional
-		//Considerar nesse ponto apenas a simulacao, contagem de falhas e tempo
+		clock_t ini = clock();
+		while (REQ[i] != -1){
+            acesso_a_pagina(REQ[i]);
+            i++;
+		}
+		clock_t fim = clock();
+		segundos = ((double)(fim - ini)) / CLOCKS_PER_SEC;
+		printf("Falhas geradas: %d    Tempo necessario para executar: %lf", COUNTFALHA, segundos);
   }
 
 	if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao de pilha
-    //Considerar nesse ponto imprimir todas as vezes como os frames estao - Nesse nao vai tempo nem falhas (DEBUG MODE)
+            while(REQ[i] != -1){
+                controle = COUNTFALHA;
+                acesso_a_pagina(REQ[i]);
+                if (controle != COUNTFALHA){
+                    printf("\nOcorreu uma falha de pagina na pagina\t%d\n", REQ[i]);
+                }else {
+                    printf("\nConsulta a pagina\t\t\t%d\n", REQ[i]);
+                }
+                lista_imprime();
+                i++;
+            }
   }
-
-  //Aqui devem ir os dados de impressao de tempo usado e falhas de pagina
 
   lista_apagar();
   return 0;
