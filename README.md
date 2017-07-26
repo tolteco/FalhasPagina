@@ -54,7 +54,8 @@ NODO* listaF; //fim da lista (posicao de onde saem os nos para falhas de pagina)
 Método `acesso_a_pagina(int [pagina a ser acessada])` deve ser usado para iteragir com a pilha. Próprio método insere elementos, remove e produz falhas de página.
 
 ### Otimo
-> Vazio por enquanto
+Método `aloca_frames()` aloca vetor F com a FRAMES posições e atribui a todas as posições -1
+
 
 ### Ambos
 - Método `ledados()` lê arquivo passado por parâmetro - máximo de 11.000.000 (onze milhões) de entradas.
