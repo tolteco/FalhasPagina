@@ -87,9 +87,6 @@ void lista_apagar (){
   NODO* p;
   NODO* q;
   int U = 0;
-  if (listaF == NULL){
-    return NULL;
-  }
   p = listaF;
   while(U == 0){
     q = p->prox;
@@ -266,21 +263,22 @@ int main(int argc, char *argv[]){
 		}
 		clock_t fim = clock();
 		segundos = ((double)(fim - ini)) / CLOCKS_PER_SEC;
-		printf("Falhas geradas: %d    Tempo necessario para executar: %lf", COUNTFALHA, segundos);
+		printf("Falhas geradas: %d\nTempo necessario para executar: %lf segundos", COUNTFALHA, segundos);
   }
 
-	if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao de pilha
-            while(REQ[i] != -1){
-                controle = COUNTFALHA;
-                acesso_a_pagina(REQ[i]);
-                if (controle != COUNTFALHA){
-                    printf("\nOcorreu uma falha de pagina na pagina\t%d\n", REQ[i]);
-                }else {
-                    printf("\nConsulta a pagina\t\t\t%d\n", REQ[i]);
-                }
-                lista_imprime();
-                i++;
-            }
+  if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao de pilha
+    while(REQ[i] != -1){
+      controle = COUNTFALHA;
+      acesso_a_pagina(REQ[i]);
+      if (controle != COUNTFALHA){
+        printf("\nOcorreu uma falha de pagina na pagina\t%d\n", REQ[i]);
+      }else {
+        printf("\nConsulta a pagina\t\t\t%d\n", REQ[i]);
+      }
+      lista_imprime();
+      i++;
+    }
+    printf("Falhas geradas: %d\n", COUNTFALHA);
   }
 
   lista_apagar();

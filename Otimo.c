@@ -94,19 +94,172 @@ int hexaint(){
 	return SUM>>j;
 }
 
+////////////////////////////////////////////VERIFICA A LISTA (FUTURO)
+//Variaveis globais este setor
+int O; //O = contador usado em REQ para preservar o valor de J
+int FA, J, I, K; //FA = numero de Falhas de pagina
+
+void oraculo(){ //Verifica o futuro
+  int C, k, i;
+  int AUX[FRAMES];
+  C = 0;
+  O = J + 1; //Continua para frente da posicao atual
+  k = FRAMES - 1;
+  for (i = 0; i < FRAMES; i++){
+		AUX[i] = 0;
+	}
+	i = 0;
+  while(REQ[O] > -1 && C < k){ //Enquanto nao estourar o vetor de requisicoes ou a quantidade de paginas -1
+		//printf("Requisicao: %d, O = %d\n", REQ[O], O);
+		while (i < FRAMES && REQ[O] != F[i]){ //Procurando para marcar
+			//printf("Posicao: [%d]\n", i);
+			i++;
+		}
+		//printf("i = %d\n", i);
+		if (i == FRAMES){ //Estourou
+			O++;
+			i = 0;
+		} else {
+			if (AUX[i] == 0){
+				AUX[i] = 1;
+				i = 0;
+			}
+			C++;
+			O++;
+		}
+		//printf("C = %d\n", C);
+	}
+	i = 0;
+  while(AUX[i] == 1){
+    i++;
+  }
+  I = i;
+	//printf("Oraculo diz: I = %d\n", I);
+  return;
+}
+
+////////////////////////////////////////////VERIFICA FALHA DE PAGINA
+
+int falhapagina(){ //Verifica Falhas de pagina
+  FA = 0;
+  J = 0;
+  I = 0;
+  K = 0;
+  int i;
+  while(REQ[J] != -1){
+		if (J%10000 == 0){
+			printf("Requisicao %d\n", J);
+		}
+	  if(K != FRAMES){ //Coloca conteudo em F ate q fique cheio
+			//printf("if\n");
+	  	while(REQ[J] == F[I] || F[I] != -1){
+	    	if(REQ[J] == F[I]){
+	      	J++;
+	      } else {
+	      	I++;
+	      }
+	    }
+	  	if(F[I] == -1){
+	    	F[I] = REQ[J];
+	      J++;
+	      FA++;
+	      I = 0;
+	    }
+	    K++;
+			//printf("K = %d", K);
+	  } else { //Inicio do tratamento apos vetor F estar cheio
+			//printf("else\n");
+			while(REQ[J] != F[I] && I != FRAMES-1){
+	    	I++;
+	    }
+	    if(REQ[J] == F[I]){ //Se o elemento foi encontrado na lista (consulta)
+	    	J++;
+	      I = 0;
+	    } else {
+	    	oraculo(); //Verifica o futuro
+	      F[I] = REQ[J];
+	      FA++;
+	      I = 0;
+	      J++;
+			}
+	  }
+	}
+  return 0;
+}
+
 void ledados(){
 	int i, j = 0;
 	while (!feof(IN)){
 		fscanf (IN, "%s\n", &U);
 		i = hexaint();
-    REQ[j] = i;
-    j++;
+        REQ[j] = i; //Vetor de paginas
+        j++;
 	}
+	REQ[j] = -1;
 }
 
-////////////////////////////////////////////FIM LEITURA
+void imprimeframes(){
+	int i;
+	for (i = 0; i < FRAMES; i++){
+		if (F[i] != -1){
+			printf("Pagina->%i\n", F[i]);
+		}
+  }
+}
+
+////////////////////////////////////////////Funcoes ligadas a impressao
+int falhapagina2(){ //Verifica Falhas de pagina com impressao
+	FA = 0;
+	J = 0;
+	I = 0;
+	K = 0;
+	int i;
+	while(REQ[J] != -1){
+		if(K != FRAMES){ //Coloca conteudo em F ate q fique cheio
+			while(REQ[J] == F[I] || F[I] != -1){
+				if(REQ[J] == F[I]){
+					printf("\nConsulta a pagina\t\t\t%d\n", REQ[J]);
+					J++;
+				}else{
+					I++;
+				}
+			}
+			if(F[I] == -1){
+				printf("\nOcorreu uma falha de pagina na pagina\t%d\n", REQ[J]);
+				F[I] = REQ[J];
+				J++;
+				FA++;
+				I = 0;
+			}
+			imprimeframes();
+			K++;
+			printf("\n");
+		} else { //Inicio do tratamento apos vetor F estar cheio
+			while(REQ[J] != F[I] && I != FRAMES){
+				I++;
+			}
+			if(REQ[J] == F[I]){
+				printf("\nConsulta a pagina\t\t\t%d\n", REQ[J]);
+				J++;
+				I = 0;
+			}else{
+				oraculo(); //Verifica o futuro
+				printf("\nOcorreu uma falha de pagina na pagina\t%d\n", REQ[J], I);
+				F[I] = REQ[J];
+				FA++;
+				I = 0;
+				J++;
+			}
+			imprimeframes();
+		}
+	}
+	printf("Falhas geradas: %d\n", FA);
+	return 0;
+}
 
 int main(int argc, char *argv[]){
+  double T;
+	int Te;
 	if (argc < 4){
 		printf ("Argumentos Insuficientes\n");
 		return 1;
@@ -117,21 +270,29 @@ int main(int argc, char *argv[]){
 		printf("Quantidade de frames invalida. Deve ser maior que zero\n");
 		return 1;
 	}
-	aloca_frames();
+	Te = aloca_frames();
+	if (Te == -1){
+		printf ("Nao foi possivel alocar o vetor de frames");
+		return 1;
+	}
 
 	IN = fopen(argv[2], "r");
 	if (IN == NULL){
-      printf("Erro, Arquivo invalido");
       return 1;
   }
 	ledados();
+	printf("Fim da leitura de disco\n");
 
 	if (strcmp(argv[1], "-f") == 0 || strcmp(argv[1], "/f") == 0 || strcmp(argv[1], "-F") == 0 || strcmp(argv[1], "/F") == 0){ //Opcao convencional
-		//Considerar nesse ponto apenas a simulacao, contagem de falhas e tempo
+		clock_t ini = clock();
+		falhapagina();
+		clock_t fim = clock();
+		T = ((double)(fim - ini)) / CLOCKS_PER_SEC;
+		printf("Falhas geradas: %i\nTempo necessario para executar: %lf segundos\n", FA, T);
   }
 
-	if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao de pilha
-    //Considerar nesse ponto imprimir todas as vezes como os frames estao - Nesse nao vai tempo nem falhas (DEBUG MODE)
+	if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao paginas
+    falhapagina2();
   }
 
   return 0;
