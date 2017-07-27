@@ -9,7 +9,6 @@
 
 //Declaracao de variaveis globais
 FILE *IN;
-FILE *OUT;
 int FRAMES = 6; //Quantidade total de frames
 int PAGINA = 5; //A definir valor fixo - Quantidade de hexadecimais usados para enderecamento de paginas
 int DESLOCAMENTO = 3;//A definir - Quantidade de hexadecimais usados para deslocamento
@@ -289,8 +288,7 @@ int main(int argc, char *argv[]){
 		falhapagina();
 		clock_t fim = clock();
 		T = ((double)(fim - ini)) / CLOCKS_PER_SEC;
-		OUT = fopen("Otimo.txt", "a+");
-		fprintf(OUT, "Falhas geradas: %i\nTempo necessario para executar: %lf segundos\n", FA, T);
+		printf("Falhas geradas: %i\nTempo necessario para executar: %lf segundos\n", FA, T);
   }
 
 	if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao paginas

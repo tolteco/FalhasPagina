@@ -9,7 +9,6 @@
 
 //Declaracao de variaveis globais
 FILE *IN;
-FILE *OUT;
 int COUNTFALHA = 0;
 int FRAMES = 6; //Quantidade total de frames
 int PAGINA = 5; //A definir valor fixo - Quantidade de hexadecimais usados para enderecamento de paginas
@@ -244,8 +243,8 @@ int main(int argc, char *argv[]){
 	}
 
 	FRAMES = atoi(argv[3]); //Converte o tamanho solicitado da unidade para inteiro
-	if (FRAMES <= 0){
-		printf("Quantidade de frames invalida. Deve ser maior que zero\n");
+	if (FRAMES <= 1){
+		printf("Quantidade de frames invalida. Deve ser maior que um\n");
 		return 1;
 	}
 
@@ -259,13 +258,12 @@ int main(int argc, char *argv[]){
   if (strcmp(argv[1], "-f") == 0 || strcmp(argv[1], "/f") == 0 || strcmp(argv[1], "-F") == 0 || strcmp(argv[1], "/F") == 0){ //Opcao convencional
 		clock_t ini = clock();
 		while (REQ[i] != -1){
-            acesso_a_pagina(REQ[i]);
-            i++;
+      acesso_a_pagina(REQ[i]);
+      i++;
 		}
 		clock_t fim = clock();
 		segundos = ((double)(fim - ini)) / CLOCKS_PER_SEC;
-    OUT = fopen("LRUPilha.txt", "a+");
-		fprintf(OUT, "Falhas geradas: %d\nTempo necessario para executar: %lf segundos", COUNTFALHA, segundos);
+		printf("Falhas geradas: %d\nTempo necessario para executar: %lf segundos", COUNTFALHA, segundos);
   }
 
   if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao de pilha
