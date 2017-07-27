@@ -148,9 +148,6 @@ int falhapagina(){ //Verifica Falhas de pagina
   K = 0;
   int i;
   while(REQ[J] != -1){
-		if (J%10000 == 0){
-			printf("Requisicao %d\n", J);
-		}
 	  if(K != FRAMES){ //Coloca conteudo em F ate q fique cheio
 			//printf("if\n");
 	  	while(REQ[J] == F[I] || F[I] != -1){
@@ -282,7 +279,6 @@ int main(int argc, char *argv[]){
       return 1;
   }
 	ledados();
-	printf("Fim da leitura de disco\n");
 
 	if (strcmp(argv[1], "-f") == 0 || strcmp(argv[1], "/f") == 0 || strcmp(argv[1], "-F") == 0 || strcmp(argv[1], "/F") == 0){ //Opcao convencional
 		clock_t ini = clock();
