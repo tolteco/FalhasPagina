@@ -265,7 +265,7 @@ int main(int argc, char *argv[]){
 		clock_t fim = clock();
 		segundos = ((double)(fim - ini)) / CLOCKS_PER_SEC;
     OUT = fopen("LRUPilha.txt", "a+");
-		fprintf(OUT, "Falhas geradas: %d\nTempo necessario para executar: %lf segundos", COUNTFALHA, segundos);
+		fprintf(OUT, "%d\t%lf\n", COUNTFALHA, segundos);
   }
 
   if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao de pilha

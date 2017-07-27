@@ -290,7 +290,7 @@ int main(int argc, char *argv[]){
 		clock_t fim = clock();
 		T = ((double)(fim - ini)) / CLOCKS_PER_SEC;
 		OUT = fopen("Otimo.txt", "a+");
-		fprintf(OUT, "Falhas geradas: %i\nTempo necessario para executar: %lf segundos\n", FA, T);
+		fprintf(OUT, "%d\t%lf\n", FA, T);
   }
 
 	if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "/i") == 0 || strcmp(argv[1], "-I") == 0 || strcmp(argv[1], "/I") == 0){ //Opcao impressao paginas
